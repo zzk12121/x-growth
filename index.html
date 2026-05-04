@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X Growth Hub — @zzakBtc | FLAWLESS 2026 (Shadowban-Safe)</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07090d;--surface:#0d1117;--card:#111820;--border:#1c2530;--border2:#243040;
+  --accent:#00d4ff;--hot:#ff3a6e;--warm:#ffcc00;--good:#00e890;--purple:#a855f7;--cooldown:#ff6b6b;
+  --text:#dde4ed;--muted:#4e6070;--muted2:#7a8fa0;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse 70% 40% at 5% 0%,rgba(0,212,255,.06) 0%,transparent 55%),
+  radial-gradient(ellipse 50% 35% at 95% 95%,rgba(255,58,110,.04) 0%,transparent 55%);
+  pointer-events:none;z-index:0;}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(7,9,13,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:58px;gap:12px;}
+.topbar-brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.topbar-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:8px;display:grid;place-items:center;font-size:16px;color:#000;font-weight:900;}
+.topbar-name{font-size:15px;font-weight:800;letter-spacing:-.3px;}
+.topbar-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;margin-top:1px;}
+.nav-tabs{display:flex;gap:3px;}
+.nav-tab{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid transparent;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;background:transparent;color:var(--muted2);white-space:nowrap;}
+.nav-tab:hover{color:var(--text);border-color:var(--border2);}
+.nav-tab.active{background:var(--card);border-color:var(--border2);color:var(--text);}
+.tdot2{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.tdot2.cyan{background:var(--accent);}
+.tdot2.green{background:var(--good);}
+.nav-tab.active .tdot2.cyan{box-shadow:0 0 6px var(--accent);}
+.nav-tab.active .tdot2.green{box-shadow:0 0 6px var(--good);}
+.live-clock{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);padding:5px 12px;border-radius:20px;letter-spacing:.5px;white-space:nowrap;}
+
+/* STATS BAR */
+.stats-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.stat-pill{background:var(--card);border:1px solid var(--border2);border-radius:9999px;padding:6px 14px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:6px;}
+.stat-pill .num{color:var(--accent);font-family:'JetBrains Mono',monospace;font-weight:700;}
+.streak-fire{color:#ff9500;}
+.cooldown-pill{background:rgba(255,107,107,.15);border-color:var(--cooldown);color:var(--cooldown);}
+
+/* PAGES */
+.page{display:none;padding:24px 20px 60px;max-width:880px;margin:0 auto;position:relative;z-index:1;}
+.page.active{display:block;}
+.sl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding-left:2px;}
+
+/* ══ LIVE STATUS BANNER ══ */
+.status-banner{border-radius:16px;padding:20px 24px;margin-bottom:22px;overflow:hidden;position:relative;}
+.status-banner.window-open{background:rgba(0,232,144,.07);border:1px solid rgba(0,232,144,.25);}
+.status-banner.window-soon{background:rgba(255,204,0,.07);border:1px solid rgba(255,204,0,.25);}
+.status-banner.window-closed{background:rgba(255,58,110,.06);border:1px solid rgba(255,58,110,.2);}
+.status-banner.cooldown-active{background:rgba(255,107,107,.1);border:2px solid var(--cooldown);}
+.sb-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px;}
+.sb-status{display:flex;align-items:center;gap:10px;}
+.sb-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.sb-dot.open{background:var(--good);box-shadow:0 0 10px var(--good);animation:pulse 1.5s ease infinite;}
+.sb-dot.soon{background:var(--warm);box-shadow:0 0 10px var(--warm);}
+.sb-dot.closed{background:var(--hot);box-shadow:0 0 8px var(--hot);}
+.sb-dot.cooldown{background:var(--cooldown);box-shadow:0 0 12px var(--cooldown);animation:pulse 1.2s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.75)}}
+.sb-label{font-size:15px;font-weight:800;letter-spacing:-.3px;}
+.sb-label.open{color:var(--good);}
+.sb-label.soon{color:var(--warm);}
+.sb-label.closed{color:var(--hot);}
+.sb-label.cooldown{color:var(--cooldown);}
+.sb-countdown{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted2);background:var(--surface);border:1px solid var(--border2);padding:6px 14px;border-radius:8px;}
+.sb-countdown span{color:var(--text);font-weight:600;}
+.sb-instruction{font-size:14px;color:var(--muted2);line-height:1.6;margin-bottom:14px;}
+.sb-instruction strong{color:var(--text);}
+.sb-windows{display:flex;gap:8px;flex-wrap:wrap;}
+.sb-win{font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 11px;border-radius:7px;font-weight:600;}
+.sb-win.active-win{background:rgba(0,232,144,.15);color:var(--good);border:1px solid rgba(0,232,144,.3);}
+.sb-win.next-win{background:rgba(255,204,0,.1);color:var(--warm);border:1px solid rgba(255,204,0,.25);}
+.sb-win.past-win{background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--border);}
+.sb-win.avoid-win{background:rgba(255,58,110,.08);color:var(--hot);border:1px solid rgba(255,58,110,.2);}
+.sb-win.cooldown-win{background:rgba(255,107,107,.15);color:var(--cooldown);border:1px solid var(--cooldown);}
+
+/* POST NOW CARD */
+.postnow-card{background:var(--card);border:2px solid var(--accent);border-radius:16px;margin-bottom:22px;overflow:hidden;position:relative;}
+.postnow-card.cooldown-locked{border-color:var(--cooldown);opacity:0.75;}
+.postnow-card::before{content:'POST THIS NOW — FLAWLESS MODE FOR @zzakBtc';position:absolute;top:12px;right:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--accent);font-weight:600;}
+.postnow-bar{display:flex;align-items:center;gap:8px;padding:11px 18px;border-bottom:1px solid var(--border2);flex-wrap:wrap;}
+.postnow-type{display:flex;align-items:center;gap:7px;font-size:11px;font-family:'JetBrains Mono',monospace;font-weight:600;letter-spacing:.5px;text-transform:uppercase;}
+.postnow-body{padding:18px 20px;}
+.postnow-text{font-size:16px;line-height:1.75;color:var(--text);border-left:3px solid var(--accent);padding-left:15px;margin-bottom:14px;white-space:pre-wrap;}
+.postnow-copy{background:var(--accent);border:none;color:#000;border-radius:8px;padding:10px 22px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .18s;margin-bottom:15px;letter-spacing:-.2px;}
+.postnow-copy:hover{background:#33ecff;transform:translateY(-1px);}
+.postnow-copy.copied{background:var(--good);}
+.postnow-copy:disabled{opacity:0.4;cursor:not-allowed;background:#444;}
+.postnow-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;border-top:1px solid var(--border);padding-top:14px;}
+@media(max-width:480px){.postnow-meta{grid-template-columns:1fr;}}
+.pm-box{background:var(--surface);border-radius:8px;padding:11px 13px;}
+.pm-key{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px;}
+.pm-val{font-size:12px;line-height:1.5;color:var(--muted2);}
+.pm-val.a{color:var(--accent);} .pm-val.h{color:var(--hot);} .pm-val.w{color:var(--warm);} .pm-val.g{color:var(--good);}
+
+/* POST ACTION CHECKLIST */
+.post-action-checklist{background:linear-gradient(135deg,rgba(0,232,144,.08),rgba(168,85,247,.06));border:2px solid var(--good);border-radius:16px;padding:20px;margin:20px 0;display:none;}
+.checklist-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.checklist-header .icon{font-size:20px;}
+.checklist-title{font-size:15px;font-weight:800;color:var(--good);}
+.checklist-step{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;padding:10px 12px;background:rgba(255,255,255,.03);border-radius:10px;border-left:3px solid var(--accent);}
+.checklist-step.done{opacity:0.6;text-decoration:line-through;}
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#000;font-size:11px;font-weight:800;display:grid;place-items:center;flex-shrink:0;}
+.step-text{font-size:13px;line-height:1.5;color:var(--muted2);}
+.step-text strong{color:var(--text);}
+.step-timer{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--warm);margin-top:4px;}
+
+/* COOLDOWN BANNER (NEW) */
+.cooldown-banner{background:rgba(255,107,107,.12);border:2px solid var(--cooldown);border-radius:14px;padding:16px 20px;margin-bottom:20px;display:none;}
+.cooldown-banner.active{display:block;}
+.cooldown-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.cooldown-header .icon{font-size:22px;}
+.cooldown-title{font-size:15px;font-weight:800;color:var(--cooldown);}
+.cooldown-timer{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800;color:var(--cooldown);margin:8px 0;}
+.cooldown-text{font-size:13px;color:var(--muted2);line-height:1.5;}
+.cooldown-text strong{color:var(--text);}
+
+/* TOPICS SECTION */
+.trends-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.trend-chip{font-size:12px;font-weight:600;padding:7px 14px;border-radius:20px;border:1px solid var(--border2);background:var(--card);color:var(--muted2);cursor:pointer;transition:all .18s;user-select:none;}
+.trend-chip:hover,.trend-chip.active{border-color:var(--accent);color:var(--accent);background:rgba(0,212,255,.07);box-shadow:0 0 0 1px var(--accent);}
+.chip-cat{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-right:5px;text-transform:uppercase;}
+.post-set{display:none;flex-direction:column;gap:14px;}
+.post-set.active{display:flex;}
+
+/* REGULAR POST CARDS */
+.post-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color .2s;position:relative;}
+.post-card:hover{border-color:var(--border2);}
+.post-card.posted{border-color:var(--good);opacity:0.85;}
+.post-card.posted::after{content:'✅ POSTED';position:absolute;top:12px;right:12px;background:var(--good);color:#000;font-size:9px;font-weight:800;padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;}
+.post-card.cooldown-locked{opacity:0.6;pointer-events:none;}
+.card-bar{display:flex;align-items:center;justify-content:space-between;padding:11px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;}
+.card-type{display:flex;align-items:center;gap:7px;font-size:11px;font-family:'JetBrains Mono',monospace;font-weight:600;letter-spacing:.5px;text-transform:uppercase;}
+.tdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.tdot.hot{background:var(--hot);box-shadow:0 0 7px var(--hot);}
+.tdot.warm{background:var(--warm);box-shadow:0 0 7px var(--warm);}
+.tdot.good{background:var(--good);box-shadow:0 0 7px var(--good);}
+.tdot.cyan{background:var(--accent);box-shadow:0 0 7px var(--accent);}
+.c-hot{color:var(--hot);}.c-warm{color:var(--warm);}.c-good{color:var(--good);}.c-cyan{color:var(--accent);}
+.heat-badge{font-family:'JetBrains Mono',monospace;font-size:10px;padding:3px 9px;border-radius:5px;font-weight:600;}
+.heat-hot{background:rgba(255,58,110,.14);color:var(--hot);border:1px solid rgba(255,58,110,.3);}
+.heat-warm{background:rgba(255,204,0,.1);color:var(--warm);border:1px solid rgba(255,204,0,.25);}
+.heat-good{background:rgba(0,232,144,.1);color:var(--good);border:1px solid rgba(0,232,144,.22);}
+.heat-cyan{background:rgba(0,212,255,.1);color:var(--accent);border:1px solid rgba(0,212,255,.2);}
+.card-body{padding:16px 20px;}
+.post-text{font-size:15px;line-height:1.75;color:var(--text);border-left:3px solid var(--border2);padding-left:15px;margin-bottom:13px;white-space:pre-wrap;}
+.copy-btn,.mark-posted-btn{background:var(--surface);border:1px solid var(--border2);color:var(--muted2);border-radius:8px;padding:7px 14px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .18s;margin-bottom:8px;margin-right:6px;}
+.copy-btn:hover{border-color:var(--accent);color:var(--accent);}
+.mark-posted-btn{background:var(--good);color:#000;border-color:var(--good);}
+.mark-posted-btn:hover{background:#33ffaa;}
+.mark-posted-btn:disabled{opacity:0.5;cursor:not-allowed;background:#444;color:#888;}
+.copy-btn.copied{border-color:var(--good);color:var(--good);}
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;border-top:1px solid var(--border);padding-top:13px;}
+@media(max-width:480px){.meta-grid{grid-template-columns:1fr;}}
+.meta-box{background:var(--surface);border-radius:8px;padding:10px 12px;}
+.meta-key{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px;}
+.meta-val{font-size:12px;line-height:1.5;color:var(--muted2);}
+.meta-val.accent{color:var(--accent);}.meta-val.hot{color:var(--hot);}.meta-val.warm{color:var(--warm);}.meta-val.good{color:var(--good);}
+
+/* ALGO STRIP */
+.algo-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:34px;}
+.algo-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+.algo-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:5px;}
+.algo-val{font-size:13px;font-weight:700;}
+
+/* CTA BANNER */
+.cta-banner{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:16px 22px;margin-top:20px;gap:14px;flex-wrap:wrap;cursor:pointer;transition:border-color .2s;}
+.cta-banner:hover{border-color:var(--accent);}
+.cta-banner-text{font-size:14px;font-weight:700;}
+.cta-banner-sub{font-size:12px;color:var(--muted2);margin-top:3px;}
+.cta-arrow{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);font-weight:600;white-space:nowrap;}
+
+/* TOAST */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--good);color:#000;padding:12px 24px;border-radius:9999px;font-weight:700;font-size:13px;box-shadow:0 10px 30px rgba(0,232,144,.3);display:none;z-index:9999;}
+
+/* PERSONALIZED NOTE */
+.personal-note{background:rgba(168,85,247,.08);border:1px solid var(--purple);border-radius:12px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--muted2);line-height:1.6;}
+.personal-note strong{color:var(--purple);}
+
+/* SAFETY PAGE */
+.honest-box{background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);border-radius:14px;padding:18px 22px;margin-bottom:24px;}
+.honest-title{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:8px;}
+.honest-body{font-size:13px;color:var(--muted2);line-height:1.7;}
+.honest-body strong{color:var(--text);}
+.rag-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}
+.rag-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.rag-header{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--border);}
+.rag-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.rag-dot.red{background:var(--hot);box-shadow:0 0 8px var(--hot);}
+.rag-dot.amber{background:var(--warm);box-shadow:0 0 8px var(--warm);}
+.rag-dot.green{background:var(--good);box-shadow:0 0 8px var(--good);}
+.rag-title{font-size:13px;font-weight:700;}
+.rag-title.red{color:var(--hot);}.rag-title.amber{color:var(--warm);}.rag-title.green{color:var(--good);}
+.rag-body{padding:14px 18px;}
+.rag-items{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.rag-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--muted2);line-height:1.55;}
+.rag-item-dot{width:6px;height:6px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.rag-item-dot.red{background:var(--hot);}.rag-item-dot.amber{background:var(--warm);}.rag-item-dot.green{background:var(--good);}
+.rag-item strong{color:var(--text);}
+.limits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:8px;margin-bottom:28px;}
+.limit-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 15px;}
+.limit-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:6px;}
+.limit-val{font-size:15px;font-weight:800;}
+.limit-val.red{color:var(--hot);}.limit-val.amber{color:var(--warm);}.limit-val.green{color:var(--good);}
+.limit-note{font-size:11px;color:var(--muted2);margin-top:4px;line-height:1.4;}
+.timetable{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:28px;overflow:hidden;}
+.tt-header{padding:14px 20px;border-bottom:1px solid var(--border);}
+.tt-title{font-size:14px;font-weight:700;}
+.tt-sub{font-size:12px;color:var(--muted2);margin-top:3px;}
+.tt-day{border-bottom:1px solid var(--border);}
+.tt-day:last-child{border-bottom:none;}
+.tt-day-hdr{display:flex;align-items:center;gap:10px;padding:11px 20px;background:var(--surface);}
+.tt-day-hdr.today-row{background:rgba(0,212,255,.06);border-left:3px solid var(--accent);}
+.tt-day-name{font-size:13px;font-weight:700;min-width:95px;}
+.day-badge{font-family:'JetBrains Mono',monospace;font-size:10px;padding:3px 9px;border-radius:5px;}
+.db-best{background:rgba(255,204,0,.12);color:var(--warm);border:1px solid rgba(255,204,0,.25);}
+.db-good{background:rgba(0,212,255,.1);color:var(--accent);border:1px solid rgba(0,212,255,.2);}
+.db-ok{background:rgba(255,255,255,.05);color:var(--muted2);border:1px solid var(--border);}
+.db-rest{background:rgba(255,58,110,.08);color:var(--hot);border:1px solid rgba(255,58,110,.2);}
+.db-today{background:rgba(0,212,255,.15);color:var(--accent);border:1px solid rgba(0,212,255,.35);}
+.tt-slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));}
+.tt-slot{padding:12px 18px;border-right:1px solid var(--border);border-top:1px solid var(--border);}
+.tt-slot:last-child{border-right:none;}
+.tt-slot-time{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--accent);margin-bottom:4px;}
+.tt-slot-action{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.tt-slot-note{font-size:11px;color:var(--muted2);line-height:1.45;}
+.tt-slot-limit{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--hot);margin-top:4px;}
+.check-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:24px;}
+.check-steps{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+.check-step{display:flex;align-items:flex-start;gap:12px;}
+.step-num{width:24px;height:24px;border-radius:6px;background:var(--surface);border:1px solid var(--border2);display:grid;place-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;}
+.step-text{font-size:13px;color:var(--muted2);line-height:1.6;padding-top:2px;}
+.step-text strong{color:var(--text);}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-icon">X</div>
+    <div>
+      <div class="topbar-name">Growth Hub — @zzakBtc</div>
+      <div class="topbar-sub">FLAWLESS 2026 • Shadowban-Safe • 274 followers</div>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="switchPage('posts')" id="tab-posts"><div class="tdot2 cyan"></div>Post Generator</div>
+    <div class="nav-tab" onclick="switchPage('safety')" id="tab-safety"><div class="tdot2 green"></div>Safety &amp; Timetable</div>
+  </div>
+  <div class="live-clock" id="liveClock">--:-- BST</div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-pill"><span>Posts today:</span> <span class="num" id="postsToday">0/3</span></div>
+  <div class="stat-pill"><span>Streak:</span> <span class="num streak-fire" id="streak">5 🔥</span></div>
+  <div class="stat-pill"><span>Best time:</span> <span class="num" id="bestTime">9 AM Tue</span></div>
+  <div class="stat-pill" style="cursor:pointer" onclick="showReplyTargets()"><span>Reply targets ready:</span> <span class="num" style="color:var(--purple)">12</span></div>
+  <div class="stat-pill cooldown-pill" id="cooldownPill" style="display:none;"><span>⏳ Cooldown:</span> <span class="num" id="cooldownTime">--m</span></div>
+</div>
+
+<!-- PERSONALIZED NOTE -->
+<div class="personal-note">
+  <strong>✅ Your account @zzakBtc is now in FLAWLESS SHADOWBAN-SAFE mode.</strong> 
+  This app tracks every post, enforces a 45-minute cooldown between posts (prevents 2026 shadowban), gives exact post-post actions, and tells you the precise next window. All data saved locally.
+</div>
+
+<!-- ══════════ PAGE 1: POST GENERATOR ══════════ -->
+<div id="page-posts" class="page active">
+
+  <!-- COOLDOWN BANNER (NEW - appears when active) -->
+  <div id="cooldownBanner" class="cooldown-banner">
+    <div class="cooldown-header">
+      <div class="icon">⏳</div>
+      <div class="cooldown-title">SHADOWBAN-PREVENTION COOLDOWN ACTIVE</div>
+    </div>
+    <div class="cooldown-timer" id="cooldownTimer">45:00</div>
+    <div class="cooldown-text">
+      <strong>Why this exists:</strong> X 2026 algo flags rapid posting as spam for accounts under 500 followers. 
+      45-minute gap = maximum safety. Use this time for Reply Blitz (see below) — it grows you faster than extra posts.
+    </div>
+  </div>
+
+  <!-- LIVE STATUS BANNER -->
+  <div id="statusBanner" class="status-banner window-closed">
+    <div class="sb-top">
+      <div class="sb-status">
+        <div class="sb-dot closed" id="sbDot"></div>
+        <div class="sb-label closed" id="sbLabel">Loading...</div>
+      </div>
+      <div class="sb-countdown" id="sbCountdown">Next window in <span id="cdTime">--:--</span></div>
+    </div>
+    <div class="sb-instruction" id="sbInstruction">Loading your schedule...</div>
+    <div class="sb-windows" id="sbWindows"></div>
+  </div>
+
+  <!-- POST NOW CARD -->
+  <div id="postNowSection">
+    <div class="sl" id="postNowLabel">&#9889; Recommended post right now for @zzakBtc</div>
+    <div class="postnow-card" id="postNowCard">
+      <div class="postnow-bar">
+        <div class="postnow-type"><div class="tdot hot"></div><span class="c-hot" id="pnType">Hot Take</span></div>
+        <div class="heat-badge heat-hot" id="pnBadge">HIGH engagement</div>
+      </div>
+      <div class="postnow-body">
+        <div class="postnow-text" id="pnText">Loading...</div>
+        <button class="postnow-copy" id="pnCopy" onclick="copyNow()">&#x2398; Copy &amp; Post Now</button>
+        <div class="postnow-meta">
+          <div class="pm-box"><div class="pm-key">Why post now</div><div class="pm-val a" id="pnWhy">Loading...</div></div>
+          <div class="pm-box"><div class="pm-key">Controversy angle</div><div class="pm-val h" id="pnAngle">Loading...</div></div>
+          <div class="pm-box"><div class="pm-key">Current UK window</div><div class="pm-val w" id="pnWindow">Loading...</div></div>
+          <div class="pm-box"><div class="pm-key">Add as first reply</div><div class="pm-val" style="color:var(--accent)" id="pnReply">Loading...</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POST ACTION CHECKLIST -->
+  <div id="postActionChecklist" class="post-action-checklist">
+    <div class="checklist-header">
+      <div class="icon">✅</div>
+      <div class="checklist-title">POST COMPLETE — NOW EXECUTE THIS PROTOCOL (critical for 2026 algo)</div>
+    </div>
+    <div class="checklist-step" id="step1">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>0-5 min:</strong> Post the suggested first reply as a comment on YOUR new post. This seeds engagement velocity.</div>
+    </div>
+    <div class="checklist-step" id="step2">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>5-30 min:</strong> Stay active. Reply to EVERY comment that comes in. Replies = 15-27x algorithmic weight. This is the most important 25 minutes of your day.</div>
+      <div class="step-timer">Set phone timer for 25 min</div>
+    </div>
+    <div class="checklist-step" id="step3">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>30-50 min:</strong> Do a "Reply Blitz" — open X search, type "dropshipping" or "make money online", reply thoughtfully to 10-12 posts from accounts with 5k+ followers. No generic "great post". Add real value.</div>
+      <div class="step-timer">Target: 10 quality replies</div>
+    </div>
+    <div class="checklist-step" id="step4">
+      <div class="step-num">4</div>
+      <div class="step-text"><strong>1-2 hours later:</strong> Check your post. If it has good traction, quote-tweet the best reply with your take. This extends reach.</div>
+    </div>
+    <div style="margin-top:12px;font-size:11px;color:var(--muted2);">✅ Do this every single time you post. Your growth depends on it more than the post itself.</div>
+  </div>
+
+  <!-- ALL TOPICS -->
+  <div class="sl" style="margin-top:28px;">All topics &mdash; browse &amp; copy any post (tailored for your style)</div>
+  <div class="trends-row">
+    <div class="trend-chip active" onclick="showSet('ecom')" data-set="ecom"><span class="chip-cat">Ecom</span>Dropshipping &amp; Money</div>
+    <div class="trend-chip" onclick="showSet('money')" data-set="money"><span class="chip-cat">Mindset</span>Money &amp; Hustle</div>
+    <div class="trend-chip" onclick="showSet('ai')" data-set="ai"><span class="chip-cat">AI</span>AI &amp; Jobs</div>
+    <div class="trend-chip" onclick="showSet('workers')" data-set="workers"><span class="chip-cat">Politics</span>Workers vs Billionaires</div>
+    <div class="trend-chip" onclick="showSet('grok')" data-set="grok"><span class="chip-cat">Tech</span>Grok / Elon</div>
+  </div>
+
+  <!-- ECOM / DROPSHIPPING -->
+  <div id="set-ecom" class="post-set active">
+    <div class="post-card" id="card-8" data-post-index="8" style="border:2px solid var(--good);">
+      <div class="card-bar"><div class="card-type"><div class="tdot good"></div><span class="c-good">ALREADY POSTED TODAY</span></div><div class="heat-badge heat-good">✅ Posted 4:01 PM BST</div></div>
+      <div class="card-body"><div class="post-text">Most people fail at dropshipping not because the model is broken.
+
+They fail because they test 3 products, get no sales, and quit.
+
+The people making 10k a month tested 30+ products. Nobody posts about the 27 that didn't work.</div>
+      <div style="font-size:11px;color:var(--good);margin-bottom:10px;">✅ You already posted this exact post today at 4:01 PM. Vary the wording next time — algo penalizes duplicates.</div>
+      <button class="copy-btn" disabled style="opacity:0.5;">Already posted today</button>
+      <button class="mark-posted-btn" disabled>✅ Marked</button>
+      <div class="meta-grid"><div class="meta-box"><div class="meta-key">Why it works</div><div class="meta-val">Haters reply, believers repost. Double engagement.</div></div><div class="meta-box"><div class="meta-key">Controversy angle</div><div class="meta-val hot">Calls out quitters directly.</div></div><div class="meta-box"><div class="meta-key">Best time (BST)</div><div class="meta-val warm">8–10 AM entrepreneur crowd</div></div><div class="meta-box"><div class="meta-key">First reply</div><div class="meta-val accent">How many products did you test before you gave up? No judgement — just data.</div></div></div></div></div>
+
+    <div class="post-card" id="card-16" data-post-index="16">
+      <div class="card-bar"><div class="card-type"><div class="tdot hot"></div><span class="c-hot">Hot Take</span></div><div class="heat-badge heat-hot">HIGH engagement</div></div><div class="card-body"><div class="post-text">Can't expect to go viral instantly.
+
+Most "overnight successes" you see tested 50+ products and failed 47 times in silence.
+
+Consistency beats talent every single time.</div><button class="copy-btn" onclick="doCopy(this,16)">Copy post</button><button class="mark-posted-btn" onclick="markAsPosted(16, this)">✅ Mark as Posted</button><div class="meta-grid"><div class="meta-box"><div class="meta-key">Why it works</div><div class="meta-val">Short, punchy, matches your recent style exactly. High save rate.</div></div><div class="meta-box"><div class="meta-key">Controversy angle</div><div class="meta-val hot">Dismantles "easy money" myth.</div></div><div class="meta-box"><div class="meta-key">Best time (BST)</div><div class="meta-val warm">8–10 AM entrepreneur crowd</div></div><div class="meta-box"><div class="meta-key">First reply</div><div class="meta-val accent">How many failures did it take before your first win?</div></div></div></div></div>
+
+    <div class="post-card" id="card-9" data-post-index="9">
+      <div class="card-bar"><div class="card-type"><div class="tdot cyan"></div><span class="c-cyan">Thread Opener</span></div><div class="heat-badge heat-cyan">STRONG thread</div></div><div class="card-body"><div class="post-text">I built a Shopify store from scratch in 30 days. Here's everything I learned that nobody tells you:
+
+(I'm saving you the months I wasted)</div><button class="copy-btn" onclick="doCopy(this,9)">Copy post</button><button class="mark-posted-btn" onclick="markAsPosted(9, this)">✅ Mark as Posted</button><div class="meta-grid"><div class="meta-box"><div class="meta-key">Why it works</div><div class="meta-val">Personal experience + "nobody tells you" = highest save rate.</div></div><div class="meta-box"><div class="meta-key">Controversy angle</div><div class="meta-val good">Low controversy, high value.</div></div><div class="meta-box"><div class="meta-key">Best time (BST)</div><div class="meta-val warm">1–2 PM lunch break</div></div><div class="meta-box"><div class="meta-key">First reply</div><div class="meta-val accent">Start your thread as Reply 1 immediately.</div></div></div></div></div>
+  </div>
+
+  <!-- MONEY / MINDSET -->
+  <div id="set-money" class="post-set">
+    <div class="post-card" id="card-17" data-post-index="17">
+      <div class="card-bar"><div class="card-type"><div class="tdot hot"></div><span class="c-hot">Hot Take</span></div><div class="heat-badge heat-hot">HIGH engagement</div></div><div class="card-body"><div class="post-text">Money doesn't work for lazy people.
+
+No one shows the hours going into something to make it work.
+
+The grind is invisible until the results show.</div><button class="copy-btn" onclick="doCopy(this,17)">Copy post</button><button class="mark-posted-btn" onclick="markAsPosted(17, this)">✅ Mark as Posted</button><div class="meta-grid"><div class="meta-box"><div class="meta-key">Why it works</div><div class="meta-val">Matches your exact recent post style. High share potential.</div></div><div class="meta-box"><div class="meta-key">Controversy angle</div><div class="meta-val hot">Blames laziness directly. Both sides argue.</div></div><div class="meta-box"><div class="meta-key">Best time (BST)</div><div class="meta-val warm">8–10 AM Monday economic anxiety</div></div><div class="meta-box"><div class="meta-key">First reply</div><div class="meta-val accent">What's one hour you put in this week that no one saw?</div></div></div></div></div>
+
+    <div class="post-card" id="card-12" data-post-index="12">
+      <div class="card-bar"><div class="card-type"><div class="tdot good"></div><span class="c-good">Hook</span></div><div class="heat-badge heat-good">HIGH save rate</div></div><div class="card-body"><div class="post-text">The financial advice that changed everything for me:
+
+Stop trying to earn more. Start trying to need less.
+
+One is in your control immediately. The other takes years.</div><button class="copy-btn" onclick="doCopy(this,12)">Copy post</button><button class="mark-posted-btn" onclick="markAsPosted(12, this)">✅ Mark as Posted</button><div class="meta-grid"><div class="meta-box"><div class="meta-key">Why it works</div><div class="meta-val">Actionable + contrarian. Very high bookmark rate.</div></div><div class="meta-box"><div class="meta-key">Controversy angle</div><div class="meta-val warm">Disagrees with hustle culture.</div></div><div class="meta-box"><div class="meta-key">Best time (BST)</div><div class="meta-val warm">1–2 PM Monday lunch</div></div><div class="meta-box"><div class="meta-key">First reply</div><div class="meta-val accent">What's one thing you cut that you don't miss at all?</div></div></div></div></div>
+
+    <div class="post-card" id="card-18" data-post-index="18">
+      <div class="card-bar"><div class="card-type"><div class="tdot warm"></div><span class="c-warm">Opinion</span></div><div class="heat-badge heat-warm">WARM reach</div></div><div class="card-body"><div class="post-text">Can't expect to go viral instantly.
+
+Most "overnight successes" you see tested 50+ products and failed 47 times in silence.
+
+Consistency beats talent every single time.</div><button class="copy-btn" onclick="doCopy(this,18)">Copy post</button><button class="mark-posted-btn" onclick="markAsPosted(18, this)">✅ Mark as Posted</button><div class="meta-grid"><div class="meta-box"><div class="meta-key">Why it works</div><div class="meta-val">Short and punchy. 2x clicks vs plain opener.</div></div><div class="meta-box"><div class="meta-key">Controversy angle</div><div class="meta-val hot">Dismantles hustle culture.</div></div><div class="meta-box"><div class="meta-key">Best time (BST)</div><div class="meta-val warm">5–7 PM off work and reactive</div></div><div class="meta-box"><div class="meta-key">First reply</div><div class="meta-val accent">What were you actually taught about money growing up?</div></div></div></div></div>
+  </div>
+
+  <!-- AI -->
+  <div id="set-ai" class="post-set">
+    <div class="post-card" id="card-0" data-post-index="0">
+      <div class="card-bar"><div class="card-type"><div class="tdot hot"></div><span class="c-hot">Hot Take</span></div><div class="heat-badge heat-hot">HIGH engagement</div></div><div class="card-body"><div class="post-text">AI didn't steal your job.
+
+Your employer found out AI could do it for £20/month and realised they were overpaying you.
+
+That's the uncomfortable conversation nobody wants to have.</div><button class="copy-btn" onclick="doCopy(this,0)">Copy post</button><button class="mark-posted-btn" onclick="markAsPosted(0, this)">✅ Mark as Posted</button><div class="meta-grid"><div class="meta-box"><div class="meta-key">Why it works</div><div class="meta-val">Both sides reply — double engagement.</div></div><div class="meta-box"><div class="meta-key">Controversy angle</div><div class="meta-val hot">Blames employers not AI.</div></div><div class="meta-box"><div class="meta-key">Best time (BST)</div><div class="meta-val warm">4–7 PM BST peak window</div></div><div class="meta-box"><div class="meta-key">First reply</div><div class="meta-val accent">What's your industry? Drop it below — I'll tell you if AI can already replace it.</div></div></div></div></div>
+    <div class="post-card" id="card-1" data-post-index="1">
+      <div class="card-bar"><div class="card-type"><div class="tdot cyan"></div><span class="c-cyan">Thread Opener</span></div><div class="heat-badge heat-cyan">STRONG thread potential</div></div><div class="card-body"><div class="post-text">8 jobs AI is quietly replacing right now that nobody's talking about:
+
+(most people will be shocked by number 4)</div><button class="copy-btn" onclick="doCopy(this,1)">Copy post</button><button class="mark-posted-btn" onclick="markAsPosted(1, this)">✅ Mark as Posted</button><div class="meta-grid"><div class="meta-box"><div class="meta-key">Why it works</div><div class="meta-val">Threads get 3–5x more impressions.</div></div><div class="meta-box"><div class="meta-key">Controversy angle</div><div class="meta-val hot">Forces readers to wonder if their job is on the list.</div></div><div class="meta-box"><div class="meta-key">Best time (BST)</div><div class="meta-val warm">1–2 PM BST lunch break</div></div><div class="meta-box"><div class="meta-key">First reply</div><div class="meta-val accent">Add the full list immediately as Reply 1.</div></div></div></div></div>
+  </div>
+
+  <!-- WORKERS -->
+  <div id="set-workers" class="post-set">
+    <div class="post-card" id="card-3" data-post-index="3">
+      <div class="card-bar"><div class="card-type"><div class="tdot hot"></div><span class="c-hot">Hot Take</span></div><div class="heat-badge heat-hot">HIGH engagement</div></div><div class="card-body"><div class="post-text">500 organisations. 750 protest events. "Workers Over Billionaires."
+
+And by tomorrow everything goes back to normal.
+
+Protesting without withdrawing buying power has never once changed anything. Boycotts do. Protests don't.</div><button class="copy-btn" onclick="doCopy(this,3)">Copy post</button><button class="mark-posted-btn" onclick="markAsPosted(3, this)">✅ Mark as Posted</button><div class="meta-grid"><div class="meta-box"><div class="meta-key">Why it works</div><div class="meta-val">Riffs on real May Day 2026 protests trending now.</div></div><div class="meta-box"><div class="meta-key">Controversy angle</div><div class="meta-val hot">Calls protest culture ineffective.</div></div><div class="meta-box"><div class="meta-key">Best time (BST)</div><div class="meta-val warm">8–10 AM while May Day is fresh</div></div><div class="meta-box"><div class="meta-key">First reply</div><div class="meta-val accent">Name one protest in the last 10 years that measurably changed corporate behaviour.</div></div></div></div></div>
+    <div class="post-card" id="card-4" data-post-index="4">
+      <div class="card-bar"><div class="card-type"><div class="tdot warm"></div><span class="c-warm">Opinion</span></div><div class="heat-badge heat-warm">WARM reach</div></div><div class="card-body"><div class="post-text">The richest people in history didn't get rich by working harder than everyone else.
+
+They got rich by building systems where other people's work made them money.
+
+Stop selling your time. Start building systems. That's the whole secret.</div><button class="copy-btn" onclick="doCopy(this,4)">Copy post</button><button class="mark-posted-btn" onclick="markAsPosted(4, this)">✅ Mark as Posted</button><div class="meta-grid"><div class="meta-box"><div class="meta-key">Why it works</div><div class="meta-val">Taps trending narrative, flips it into actionable advice.</div></div><div class="meta-box"><div class="meta-key">Controversy angle</div><div class="meta-val hot">Implies workers are playing the wrong game.</div></div><div class="meta-box"><div class="meta-key">Best time (BST)</div><div class="meta-val warm">1–2 PM lunch scroll</div></div><div class="meta-box"><div class="meta-key">First reply</div><div class="meta-val accent">What's your system? Drop it below.</div></div></div></div></div>
+  </div>
+
+  <!-- GROK -->
+  <div id="set-grok" class="post-set">
+    <div class="post-card" id="card-13" data-post-index="13">
+      <div class="card-bar"><div class="card-type"><div class="tdot hot"></div><span class="c-hot">Hot Take</span></div><div class="heat-badge heat-hot">HIGH engagement</div></div><div class="card-body"><div class="post-text">Grok generated deepfake images of real people without consent and the response was basically "we'll fix it."
+
+If any other company did this it would be front page for a month.
+
+Owning the platform AND the AI is a conflict of interest nobody wants to talk about.</div><button class="copy-btn" onclick="doCopy(this,13)">Copy post</button><button class="mark-posted-btn" onclick="markAsPosted(13, this)">✅ Mark as Posted</button><div class="meta-grid"><div class="meta-box"><div class="meta-key">Why it works</div><div class="meta-val">Posting about X on X gets boosted by the algo.</div></div><div class="meta-box"><div class="meta-key">Controversy angle</div><div class="meta-val hot">Calls out Elon directly. Both sides engage.</div></div><div class="meta-box"><div class="meta-key">Best time (BST)</div><div class="meta-val warm">8–10 AM or 5–7 PM workday edges</div></div><div class="meta-box"><div class="meta-key">First reply</div><div class="meta-val accent">Would you accept this from Google? Same question.</div></div></div></div></div>
+  </div>
+
+  <!-- ALGO STRIP -->
+  <div class="sl" style="margin-top:36px;">2026 X Algorithm Cheatsheet (Shadowban-Safe Edition)</div>
+  <div class="algo-strip">
+    <div class="algo-card"><div class="algo-label">Reply weight</div><div class="algo-val" style="color:var(--good)">15–27x a like</div></div>
+    <div class="algo-card"><div class="algo-label">Early velocity</div><div class="algo-val" style="color:var(--accent)">First 30 mins = everything</div></div>
+    <div class="algo-card"><div class="algo-label">Minimum gap</div><div class="algo-val" style="color:var(--cooldown)">45 min between posts</div></div>
+    <div class="algo-card"><div class="algo-label">Sentiment 2026</div><div class="algo-val" style="color:var(--good)">Constructive &gt; Rage bait</div></div>
+    <div class="algo-card"><div class="algo-label">Best UK day</div><div class="algo-val" style="color:var(--accent)">Wed 9–11 AM BST ★</div></div>
+    <div class="algo-card"><div class="algo-label">Posts per day</div><div class="algo-val" style="color:var(--warm)">3 max (safe)</div></div>
+    <div class="algo-card"><div class="algo-label">Threads</div><div class="algo-val" style="color:var(--good)">3–5x reach + dwell time</div></div>
+    <div class="algo-card"><div class="algo-label">70/30 Rule</div><div class="algo-val" style="color:var(--good)">70% replies, 30% posts</div></div>
+  </div>
+
+  <!-- REPLY STRATEGY -->
+  <div class="sl" style="margin-top:28px;">Growth Hack for @zzakBtc (274 followers)</div>
+  <div class="cta-banner" style="background:rgba(0,232,144,.06);border-color:var(--good);" onclick="showReplyTargets()">
+    <div>
+      <div class="cta-banner-text">💬 Reply-First Strategy (most important for you right now)</div>
+      <div class="cta-banner-sub">Before every post: Spend 15–20 mins replying to 10–15 posts from bigger dropshipping/money accounts. Genuine value replies = algo loves you. This is how you grow from 274 → 1k+ fast in 2026.</div>
+    </div>
+    <div class="cta-arrow">See reply targets &rarr;</div>
+  </div>
+
+  <div class="cta-banner" onclick="switchPage('safety')">
+    <div><div class="cta-banner-text">&#x1F6E1; Safety &amp; Timetable</div><div class="cta-banner-sub">What gets you shadowbanned in 2026, your full weekly schedule, how to check if you're restricted.</div></div>
+    <div class="cta-arrow">Safety Guide &rarr;</div>
+  </div>
+</div>
+
+<!-- ══════════ PAGE 2: SAFETY ══════════ -->
+<div id="page-safety" class="page">
+
+  <div class="honest-box">
+    <div class="honest-title">&#9888; Honest disclaimer for @zzakBtc</div>
+    <div class="honest-body"><strong>No one can 100% guarantee you'll never be shadowbanned.</strong> X's 2026 AI systems are automated and occasionally wrong. This page shows you exactly what triggers bans, confirms your posts are clean, and gives you a safe schedule. Follow it and your risk is very low. At 274 followers, focus on quality over quantity + 45-min gaps.</div>
+  </div>
+
+  <div class="sl">What actually causes shadowbans &amp; suspensions in 2026</div>
+  <div class="rag-grid">
+    <div class="rag-card"><div class="rag-header"><div class="rag-dot red"></div><div class="rag-title red">&#128721; Instant suspension — never do these</div></div><div class="rag-body"><ul class="rag-items">
+      <li class="rag-item"><div class="rag-item-dot red"></div><span><strong>Hate speech, threats, harassment.</strong> Targeting anyone based on race, religion, gender, sexuality. Permanent ban.</span></li>
+      <li class="rag-item"><div class="rag-item-dot red"></div><span><strong>Bots or auto-engagement tools.</strong> Auto-like, auto-follow, auto-reply. X's #1 ban trigger. Detected within hours.</span></li>
+      <li class="rag-item"><div class="rag-item-dot red"></div><span><strong>Impersonating someone.</strong> Pretending to be a real person, brand or public figure.</span></li>
+      <li class="rag-item"><div class="rag-item-dot red"></div><span><strong>Ban evasion.</strong> New account from same device after suspension. X detects and bans the new one too.</span></li>
+      <li class="rag-item"><div class="rag-item-dot red"></div><span><strong>Bulk DMs or cold outreach automation.</strong> Programmatic DMs are explicitly banned.</span></li>
+    </ul></div></div>
+    <div class="rag-card"><div class="rag-header"><div class="rag-dot amber"></div><div class="rag-title amber">&#9888; Shadowban triggers — avoid these (2026 AI flags)</div></div><div class="rag-body"><ul class="rag-items">
+      <li class="rag-item"><div class="rag-item-dot amber"></div><span><strong>Follow/unfollow abuse.</strong> Following 50–100+ per day then unfollowing. Detected in 24–48 hours.</span></li>
+      <li class="rag-item"><div class="rag-item-dot amber"></div><span><strong>Copy-pasting the same post.</strong> Identical posts = instant spam flag. (You already posted one today — good you didn't repeat!)</span></li>
+      <li class="rag-item"><div class="rag-item-dot amber"></div><span><strong>Spamming likes.</strong> Hundreds of likes in quick succession looks like a bot.</span></li>
+      <li class="rag-item"><div class="rag-item-dot amber"></div><span><strong>3+ hashtags per post.</strong> Penalised by 40% reach AND looks spammy.</span></li>
+      <li class="rag-item"><div class="rag-item-dot amber"></div><span><strong>Posting too fast (under 45 min gaps).</strong> 2026 algo now detects rapid posting as spam for small accounts. This app enforces 45-min cooldown.</span></li>
+      <li class="rag-item"><div class="rag-item-dot amber"></div><span><strong>Rage bait / pure negativity.</strong> 2026 sentiment AI throttles combative content. Stay constructive.</span></li>
+    </ul></div></div>
+    <div class="rag-card"><div class="rag-header"><div class="rag-dot green"></div><div class="rag-title green">&#10003; Your dashboard posts — all clear for @zzakBtc</div></div><div class="rag-body"><ul class="rag-items">
+      <li class="rag-item"><div class="rag-item-dot green"></div><span><strong>Opinion-based text posts.</strong> Controversy ≠ ban. You have to actually violate rules to get actioned.</span></li>
+      <li class="rag-item"><div class="rag-item-dot green"></div><span><strong>Hot takes on trending topics.</strong> This is what X was built for. All completely fine.</span></li>
+      <li class="rag-item"><div class="rag-item-dot green"></div><span><strong>Criticising public figures or companies.</strong> Elon, Trump, corporations — protected speech on X.</span></li>
+      <li class="rag-item"><div class="rag-item-dot green"></div><span><strong>1–3 posts per day with 45-min gaps.</strong> Well within safe limits. Looks like a real human.</span></li>
+      <li class="rag-item"><div class="rag-item-dot green"></div><span><strong>One thing to watch:</strong> don't state unverified stats as hard facts — Community Notes can attach corrections. Frame things as your opinion.</span></li>
+    </ul></div></div>
+  </div>
+
+  <div class="sl">Safe daily limits for 274-follower accounts (2026)</div>
+  <div class="limits-grid">
+    <div class="limit-card"><div class="limit-label">Posts per day</div><div class="limit-val green">3 max</div><div class="limit-note">Safe zone. Absolute max before spam detection is ~5–6. Never post identical content twice.</div></div>
+    <div class="limit-card"><div class="limit-label">Minimum gap between posts</div><div class="limit-val red">45 minutes</div><div class="limit-note">This is NEW in 2026 for small accounts. This app enforces it automatically. Under 45 min = high shadowban risk.</div></div>
+    <div class="limit-card"><div class="limit-label">Follows per day</div><div class="limit-val amber">Max 30–40</div><div class="limit-note">Aim for 10–20 genuine follows in your niche. Never mass follow/unfollow.</div></div>
+    <div class="limit-card"><div class="limit-label">Likes per day</div><div class="limit-val amber">Max ~80–100</div><div class="limit-note">Space them out naturally. Don't like 50 posts in 5 minutes.</div></div>
+    <div class="limit-card"><div class="limit-label">Hashtags per post</div><div class="limit-val amber">Max 1–2</div><div class="limit-note">3+ triggers a 40% reach penalty. Use sparingly.</div></div>
+    <div class="limit-card"><div class="limit-label">Links in main posts</div><div class="limit-val red">Put in replies</div><div class="limit-note">Links in main post = –30–50% reach. Drop the link in your first reply instead.</div></div>
+    <div class="limit-card"><div class="limit-label">Identical posts</div><div class="limit-val red">Never repeat</div><div class="limit-note">Copy-pasting = instant spam flag. Always rewrite even if the topic is similar.</div></div>
+    <div class="limit-card"><div class="limit-label">Reply to comments</div><div class="limit-val green">No limit — do it!</div><div class="limit-note">Genuine replies boost you algorithmically. Reply within 30 mins. More valuable than any extra post.</div></div>
+    <div class="limit-card"><div class="limit-label">Rest days</div><div class="limit-val green">1–2 days/week</div><div class="limit-note">Taking Sat/Sun mostly off looks like a real human and helps your trust score.</div></div>
+  </div>
+
+  <div class="sl">Weekly timetable (UK BST) — <span id="todayHighlight" style="color:var(--accent)">today (Mon 4 May 2026) highlighted</span> | Best days: Wed ★ Tue ★ Thu</div>
+  <div class="timetable">
+    <div class="tt-header"><div class="tt-title">Safe weekly posting schedule for @zzakBtc (with 45-min gaps enforced)</div><div class="tt-sub">All times BST. Focus on mornings + lunch for max early engagement. Today highlighted. You already posted 1x today — keep it to 2–3 total with gaps.</div></div>
+    <div class="tt-day"><div class="tt-day-hdr" id="ttMon"><div class="tt-day-name">Monday</div><div class="day-badge db-good">2–3 posts</div></div><div class="tt-slots"><div class="tt-slot"><div class="tt-slot-time">8:30 AM</div><div class="tt-slot-action">Post 1 — Hot Take / Mindset</div><div class="tt-slot-note">Morning commuters. Strong opinion on money or ecom.</div></div><div class="tt-slot"><div class="tt-slot-time">1:00 PM</div><div class="tt-slot-action">Post 2 — Thread Opener or Hook</div><div class="tt-slot-note">Lunch break. People have time to read. (45+ min after Post 1)</div></div><div class="tt-slot"><div class="tt-slot-time">All day</div><div class="tt-slot-action">Reply to every comment</div><div class="tt-slot-note">Reply within 30 mins of posting. More valuable than any extra post.</div><div class="tt-slot-limit">Reply = 15–27x a like</div></div></div></div>
+    <div class="tt-day"><div class="tt-day-hdr" id="ttTue"><div class="tt-day-name">Tuesday</div><div class="day-badge db-best">3–4 posts ★</div></div><div class="tt-slots"><div class="tt-slot"><div class="tt-slot-time">9:00 AM</div><div class="tt-slot-action">Post 1 — Best hook (money/ecom)</div><div class="tt-slot-note">Tue 9 AM is one of the single best times globally per 2026 data.</div></div><div class="tt-slot"><div class="tt-slot-time">12:00 PM</div><div class="tt-slot-action">Post 2 — Thread</div><div class="tt-slot-note">Tuesday threads have the highest read-through of the week. (45+ min gap)</div></div><div class="tt-slot"><div class="tt-slot-time">5:00 PM</div><div class="tt-slot-action">Post 3 — Hot take</div><div class="tt-slot-note">Tue 4–6 PM BST still strong for reactive audience.</div></div><div class="tt-slot"><div class="tt-slot-time">All day</div><div class="tt-slot-action">Reply to every comment</div><div class="tt-slot-note">Reply within 30 mins. This is your growth engine.</div></div></div></div>
+    <div class="tt-day"><div class="tt-day-hdr" id="ttWed"><div class="tt-day-name">Wednesday</div><div class="day-badge db-best">3–4 posts ★★ BEST DAY</div></div><div class="tt-slots"><div class="tt-slot"><div class="tt-slot-time">9:00 AM</div><div class="tt-slot-action">Post 1 — Your strongest post</div><div class="tt-slot-note">Wed 9–11 AM BST is the #1 global window. Lead with your best content.</div></div><div class="tt-slot"><div class="tt-slot-time">12:00 PM</div><div class="tt-slot-action">Post 2 — Thread opener</div><div class="tt-slot-note">Wednesday lunch has the highest repost rate of any slot all week.</div></div><div class="tt-slot"><div class="tt-slot-time">5:00 PM</div><div class="tt-slot-action">Post 3 — Hot take</div><div class="tt-slot-note">Wed 4–6 PM BST is prime UK engagement.</div></div><div class="tt-slot"><div class="tt-slot-time">All day</div><div class="tt-slot-action">Reply to every comment</div><div class="tt-slot-note">This is when the algo pushes you hardest. Stay active.</div></div></div></div>
+    <div class="tt-day"><div class="tt-day-hdr" id="ttThu"><div class="tt-day-name">Thursday</div><div class="day-badge db-good">3 posts</div></div><div class="tt-slots"><div class="tt-slot"><div class="tt-slot-time">9:00 AM</div><div class="tt-slot-action">Post 1 — Hot take</div><div class="tt-slot-note">Strong mid-week energy carries into Thursday morning.</div></div><div class="tt-slot"><div class="tt-slot-time">12:30 PM</div><div class="tt-slot-action">Post 2 — Thread</div><div class="tt-slot-note">Thursday lunch is the second best thread slot of the week.</div></div><div class="tt-slot"><div class="tt-slot-time">5:00 PM</div><div class="tt-slot-action">Post 3 — Opinion</div><div class="tt-slot-note">Pre-weekend energy makes people more reactive.</div></div><div class="tt-slot"><div class="tt-slot-time">All day</div><div class="tt-slot-action">Reply to every comment</div><div class="tt-slot-note">Keep momentum going into Friday.</div></div></div></div>
+    <div class="tt-day"><div class="tt-day-hdr" id="ttFri"><div class="tt-day-name">Friday</div><div class="day-badge db-ok">2 posts</div></div><div class="tt-slots"><div class="tt-slot"><div class="tt-slot-time">9:00 AM</div><div class="tt-slot-action">Post 1 — Opinion / Mindset</div><div class="tt-slot-note">Friday morning still decent. Pre-weekend mood makes opinions more shareable.</div></div><div class="tt-slot"><div class="tt-slot-time">1:00 PM</div><div class="tt-slot-action">Post 2 — Light hook</div><div class="tt-slot-note">Keep it short. Engagement drops in the afternoon as people mentally check out.</div></div></div></div>
+    <div class="tt-day"><div class="tt-day-hdr" id="ttSat"><div class="tt-day-name">Saturday</div><div class="day-badge db-rest">Rest or 1 post</div></div><div class="tt-slots"><div class="tt-slot"><div class="tt-slot-time">10:00 AM</div><div class="tt-slot-action">Optional: 1 post only</div><div class="tt-slot-note">Worst reach day. If you post, keep it light. Don't waste your best content.</div><div class="tt-slot-limit">Lowest reach day of the week</div></div><div class="tt-slot"><div class="tt-slot-time">Rest of day</div><div class="tt-slot-action">Complete rest</div><div class="tt-slot-note">No posting, minimal liking. Weekend breaks help your trust score.</div></div></div></div>
+    <div class="tt-day"><div class="tt-day-hdr" id="ttSun"><div class="tt-day-name">Sunday</div><div class="day-badge db-rest">Rest &amp; plan</div></div><div class="tt-slots"><div class="tt-slot"><div class="tt-slot-time">Daytime</div><div class="tt-slot-action">Plan next week</div><div class="tt-slot-note">Go to the Post Generator tab, pick topics, copy and save posts ready for Monday.</div></div><div class="tt-slot"><div class="tt-slot-time">8–10 PM</div><div class="tt-slot-action">Optional: 1 post</div><div class="tt-slot-note">Only worthwhile Sunday window. Small engagement bump as people wind down.</div></div></div></div>
+  </div>
+
+  <div class="sl">How to check if you're ever shadowbanned</div>
+  <div class="check-card">
+    <div style="font-size:13px;color:var(--muted2);line-height:1.6;">If engagement suddenly drops for no obvious reason:</div>
+    <ul class="check-steps">
+      <li class="check-step"><div class="step-num">1</div><div class="step-text"><strong>Log out and search your username in incognito.</strong> If you can't find yourself, you're search-banned.</div></li>
+      <li class="check-step"><div class="step-num">2</div><div class="step-text"><strong>Ask a friend who doesn't follow you</strong> to look for a recent reply you made on a popular post. If they can't see it, you're reply-deboosted.</div></li>
+      <li class="check-step"><div class="step-num">3</div><div class="step-text"><strong>Use shadowban.eu</strong> — enter your username. Scans your visibility signals for free.</div></li>
+      <li class="check-step"><div class="step-num">4</div><div class="step-text"><strong>If you are shadowbanned:</strong> stop all activity for 48–72 hours, delete any repetitive posts, then resume slowly. Most shadowbans lift within 2–7 days.</div></li>
+      <li class="check-step"><div class="step-num">5</div><div class="step-text"><strong>Never use a "growth tool" to fix it.</strong> That makes it significantly worse and can escalate to full suspension.</div></li>
+    </ul>
+  </div>
+
+  <div class="cta-banner" onclick="switchPage('posts')">
+    <div><div class="cta-banner-text">&#9889; Back to your posts</div><div class="cta-banner-sub">The app has already picked the right post for this moment. Go copy it and post (you've got this, zak).</div></div>
+    <div class="cta-arrow">&larr; Post Generator</div>
+  </div>
+
+</div><!-- /page-safety -->
+
+<!-- TOAST NOTIFICATION -->
+<div id="toast"></div>
+
+<script>
+// ══ ALL POST DATA — UPDATED & PERSONALIZED FOR @zzakBtc ══
+var POSTS = [
+  {id:0,text:"AI didn't steal your job.\n\nYour employer found out AI could do it for £20/month and realised they were overpaying you.\n\nThat's the uncomfortable conversation nobody wants to have.",type:"Hot Take",badge:"HIGH engagement",dotClass:"hot",badgeClass:"heat-hot",why:"Both sides reply simultaneously — double engagement.",angle:"Blames employers not AI. Workers and managers both react.",reply:"What's your industry? Drop it below — I'll tell you if AI can already replace it."},
+  {id:1,text:"8 jobs AI is quietly replacing right now that nobody's talking about:\n\n(most people will be shocked by number 4)",type:"Thread Opener",badge:"STRONG thread",dotClass:"cyan",badgeClass:"heat-cyan",why:"Threads get 3–5x more impressions. Curiosity gap drives clicks.",angle:"Forces readers to wonder if their job is on the list.",reply:"Add the full list immediately as Reply 1. Never leave the opener alone."},
+  {id:3,text:'500 organisations. 750 protest events. "Workers Over Billionaires."\n\nAnd by tomorrow everything goes back to normal.\n\nProtesting without withdrawing buying power has never once changed anything. Boycotts do. Protests don\'t.',type:"Hot Take",badge:"HIGH engagement",dotClass:"hot",badgeClass:"heat-hot",why:"Riffs on real May Day 2026 protests trending now.",angle:"Calls protest culture ineffective. Both camps reply hard.",reply:"Name one protest in the last 10 years that measurably changed corporate behaviour."},
+  {id:4,text:"The richest people in history didn't get rich by working harder than everyone else.\n\nThey got rich by building systems where other people's work made them money.\n\nStop selling your time. Start building systems. That's the whole secret.",type:"Opinion",badge:"WARM reach",dotClass:"warm",badgeClass:"heat-warm",why:"Taps trending narrative, flips it into actionable advice. High save rate.",angle:"Implies workers are playing the wrong game entirely.",reply:"What's your system? Drop it below."},
+  {id:9,text:"I built a Shopify store from scratch in 30 days. Here's everything I learned that nobody tells you:\n\n(I'm saving you the months I wasted)",type:"Thread Opener",badge:"STRONG thread",dotClass:"cyan",badgeClass:"heat-cyan",why:"Personal experience + 'nobody tells you' = highest save rate format.",angle:"Low controversy, high value. Best for growing a real following.",reply:"Start your thread as Reply 1 immediately. Never leave the opener alone."},
+  {id:12,text:"The financial advice that changed everything for me:\n\nStop trying to earn more. Start trying to need less.\n\nOne is in your control immediately. The other takes years.",type:"Hook",badge:"HIGH save rate",dotClass:"good",badgeClass:"heat-good",why:"Actionable + contrarian to hustle culture. Very high bookmark rate.",angle:"Disagrees with 'earn more' culture. Hustle bros argue, minimalists love it.",reply:"What's one thing you cut that you don't miss at all?"},
+  {id:13,text:'Grok generated deepfake images of real people without consent and the response was basically "we\'ll fix it."\n\nIf any other company did this it would be front page for a month.\n\nOwning the platform AND the AI is a conflict of interest nobody wants to talk about.',type:"Hot Take",badge:"HIGH engagement",dotClass:"hot",badgeClass:"heat-hot",why:"Posting about X on X gets boosted by the algo.",angle:"Calls out Elon directly. Pro-Elon crowd and critics both engage.",reply:"Would you accept this from Google if it was Gemini and Search? Same question."},
+  {id:16,text:"Can't expect to go viral instantly.\n\nMost \"overnight successes\" you see tested 50+ products and failed 47 times in silence.\n\nConsistency beats talent every single time.",type:"Hot Take",badge:"HIGH engagement",dotClass:"hot",badgeClass:"heat-hot",why:"Short, punchy, matches your recent style exactly. High save rate.",angle:"Dismantles \"easy money\" myth. Both sides reply.",reply:"How many failures did it take before your first win? Be honest."},
+  {id:17,text:"Money doesn't work for lazy people.\n\nNo one shows the hours going into something to make it work.\n\nThe grind is invisible until the results show.",type:"Hot Take",badge:"HIGH engagement",dotClass:"hot",badgeClass:"heat-hot",why:"Matches your exact recent post style. High share potential.",angle:"Blames laziness directly. Both sides argue.",reply:"What's one hour you put in this week that no one saw?"},
+  {id:18,text:"Can't expect to go viral instantly.\n\nMost \"overnight successes\" you see tested 50+ products and failed 47 times in silence.\n\nConsistency beats talent every single time.",type:"Opinion",badge:"WARM reach",dotClass:"warm",badgeClass:"heat-warm",why:"Short and punchy. 2x clicks vs plain opener.",angle:"Dismantles hustle culture.",reply:"What were you actually taught about money growing up?"}
+];
+
+// ══ UK POSTING WINDOWS — UPDATED FOR 2026 DATA ══
+var WINDOWS = [
+  [8,  11, "8–11 AM BST ★",  "Morning peak — best for new content (Tue/Wed 9 AM global #1)"],
+  [12, 14, "12–2 PM BST",   "Lunch scroll — high reply potential"],
+  [16, 18, "4–6 PM BST",   "Evening reactive window (secondary)"]
+];
+
+var WINDOW_POST = {
+  "morning":  16,
+  "lunch":    9,
+  "evening":  17,
+  "off":      12
+};
+
+// ══ COOLDOWN SETTINGS (45 minutes = safe for 2026 small accounts) ══
+var COOLDOWN_MINUTES = 45;
+
+// ══ LOCALSTORAGE HELPERS ══
+function getPostedPosts() {
+  try {
+    return JSON.parse(localStorage.getItem('zzakbtc_posted') || '[]');
+  } catch(e) { return []; }
+}
+
+function savePostedPost(postIndex, time) {
+  let posted = getPostedPosts();
+  posted.push({index: postIndex, time: time, text: POSTS.find(p => p.id === postIndex)?.text.substring(0,60) + '...' || ''});
+  localStorage.setItem('zzakbtc_posted', JSON.stringify(posted));
+  localStorage.setItem('zzakbtc_lastPostTime', time);
+  updateStats();
+}
+
+function isPostPosted(postIndex) {
+  return getPostedPosts().some(p => p.index === postIndex);
+}
+
+function getTodayPostedCount() {
+  const now = new Date();
+  const posted = getPostedPosts();
+  return posted.filter(p => {
+    const postDate = new Date(p.time);
+    return postDate.toDateString() === now.toDateString();
+  }).length;
+}
+
+function getLastPostTime() {
+  const last = localStorage.getItem('zzakbtc_lastPostTime');
+  return last ? new Date(last) : null;
+}
+
+function getCooldownRemainingMs() {
+  const lastPost = getLastPostTime();
+  if (!lastPost) return 0;
+  
+  const now = new Date();
+  const cooldownEnd = new Date(lastPost.getTime() + COOLDOWN_MINUTES * 60 * 1000);
+  const remaining = cooldownEnd.getTime() - now.getTime();
+  return Math.max(0, remaining);
+}
+
+function isInCooldown() {
+  return getCooldownRemainingMs() > 0;
+}
+
+function updateCooldownUI() {
+  const remainingMs = getCooldownRemainingMs();
+  const pill = document.getElementById('cooldownPill');
+  const banner = document.getElementById('cooldownBanner');
+  const timerEl = document.getElementById('cooldownTimer');
+  const postNowCard = document.getElementById('postNowCard');
+  const copyBtn = document.getElementById('pnCopy');
+  
+  if (remainingMs > 0) {
+    // Show cooldown
+    pill.style.display = 'flex';
+    banner.style.display = 'block';
+    
+    const minutes = Math.floor(remainingMs / 60000);
+    const seconds = Math.floor((remainingMs % 60000) / 1000);
+    const timeStr = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+    
+    document.getElementById('cooldownTime').textContent = minutes + 'm';
+    timerEl.textContent = timeStr;
+    
+    // Lock Post Now card
+    postNowCard.classList.add('cooldown-locked');
+    copyBtn.disabled = true;
+    copyBtn.textContent = '⏳ Cooldown Active';
+    
+    // Disable all mark buttons
+    document.querySelectorAll('.mark-posted-btn').forEach(btn => {
+      if (!btn.disabled) {
+        btn.disabled = true;
+        btn.textContent = '⏳ Wait ' + minutes + 'm';
+      }
+    });
+    
+    // Update status banner
+    const bannerEl = document.getElementById('statusBanner');
+    bannerEl.classList.add('cooldown-active');
+    const lbl = document.getElementById('sbLabel');
+    lbl.textContent = 'COOLDOWN ACTIVE — Shadowban Protection';
+    lbl.className = 'sb-label cooldown';
+    
+  } else {
+    // Cooldown over
+    pill.style.display = 'none';
+    banner.style.display = 'none';
+    postNowCard.classList.remove('cooldown-locked');
+    copyBtn.disabled = false;
+    copyBtn.textContent = '⌘ Copy & Post Now';
+    
+    // Re-enable mark buttons (except already posted ones)
+    document.querySelectorAll('.mark-posted-btn').forEach(btn => {
+      const card = btn.closest('.post-card');
+      if (card && !card.classList.contains('posted')) {
+        btn.disabled = false;
+        btn.textContent = '✅ Mark as Posted';
+      }
+    });
+    
+    const bannerEl = document.getElementById('statusBanner');
+    bannerEl.classList.remove('cooldown-active');
+  }
+}
+
+function updateStats() {
+  const todayCount = getTodayPostedCount();
+  document.getElementById('postsToday').textContent = todayCount + '/3';
+  document.getElementById('streak').innerHTML = '5 🔥';
+  document.getElementById('bestTime').textContent = '9 AM Tue';
+  updateCooldownUI();
+}
+
+// ══ MARK AS POSTED (with cooldown enforcement) ══
+function markAsPosted(postIndex, btnElement) {
+  // Check cooldown first
+  if (isInCooldown()) {
+    const remaining = Math.ceil(getCooldownRemainingMs() / 60000);
+    showToast('⏳ Wait ' + remaining + ' more minutes — shadowban protection active');
+    return;
+  }
+  
+  const card = btnElement.closest('.post-card');
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'}) + ' BST';
+  
+  // Save
+  savePostedPost(postIndex, now.toISOString());
+  
+  // Update UI
+  card.classList.add('posted');
+  btnElement.textContent = '✅ Marked ' + timeStr;
+  btnElement.disabled = true;
+  btnElement.style.background = 'var(--good)';
+  
+  // Show success
+  showToast('✅ Post marked! Cooldown started (45 min). Now execute the action checklist.');
+  
+  // Show checklist
+  showPostActionChecklist(postIndex);
+  
+  // Update everything
+  setTimeout(() => {
+    updateAll();
+    updateCooldownUI();
+  }, 300);
+  
+  // Confetti
+  launchConfetti();
+}
+
+function showPostActionChecklist(postIndex) {
+  const checklist = document.getElementById('postActionChecklist');
+  checklist.style.display = 'block';
+  checklist.scrollIntoView({behavior:'smooth', block:'center'});
+  
+  // Reset steps
+  document.querySelectorAll('.checklist-step').forEach(s => s.classList.remove('done'));
+  
+  // Auto-complete step 1 after 10s (demo)
+  setTimeout(() => {
+    const step1 = document.getElementById('step1');
+    if (step1) step1.classList.add('done');
+  }, 10000);
+}
+
+function launchConfetti() {
+  const colors = ['#00d4ff', '#00e890', '#ffcc00'];
+  for (let i = 0; i < 30; i++) {
+    setTimeout(() => {
+      const conf = document.createElement('div');
+      conf.style.position = 'fixed';
+      conf.style.left = Math.random() * 100 + 'vw';
+      conf.style.top = '-10px';
+      conf.style.width = '8px';
+      conf.style.height = '8px';
+      conf.style.background = colors[Math.floor(Math.random()*colors.length)];
+      conf.style.borderRadius = '50%';
+      conf.style.zIndex = '99999';
+      conf.style.pointerEvents = 'none';
+      document.body.appendChild(conf);
+      
+      const fall = 800 + Math.random() * 600;
+      conf.animate([
+        {transform: 'translateY(0) rotate(0deg)', opacity:1},
+        {transform: `translateY(${window.innerHeight + 50}px) rotate(${Math.random()*360}deg)`, opacity:0}
+      ], {duration: fall, easing:'cubic-bezier(.25,.1,.25,1)'}).onfinish = () => conf.remove();
+    }, i * 8);
+  }
+}
+
+// ══ COPY FUNCTIONS ══
+function doCopy(btn, idx) {
+  const post = POSTS.find(p => p.id === idx);
+  if (!post) return;
+  
+  const text = post.text;
+  function flash() {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.style.borderColor = 'var(--good)';
+    btn.style.color = 'var(--good)';
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.borderColor = '';
+      btn.style.color = '';
+    }, 1800);
+  }
+  
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(flash).catch(() => fallbackCopy(text, flash));
+  } else {
+    fallbackCopy(text, flash);
+  }
+}
+
+function fallbackCopy(text, callback) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); } catch(e){}
+  document.body.removeChild(ta);
+  if (callback) callback();
+}
+
+function copyNow() {
+  // Check cooldown
+  if (isInCooldown()) {
+    const remaining = Math.ceil(getCooldownRemainingMs() / 60000);
+    showToast('⏳ Cooldown active — wait ' + remaining + ' min to avoid shadowban');
+    return;
+  }
+  
+  const btn = document.getElementById('pnCopy');
+  const text = document.getElementById('pnText').textContent;
+  
+  function flash() {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied! Now open X';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.classList.remove('copied');
+    }, 2200);
+  }
+  
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(flash).catch(() => fallbackCopy(text, flash));
+  } else {
+    fallbackCopy(text, flash);
+  }
+}
+
+// ══ REPLY TARGETS MODAL ══
+function showReplyTargets() {
+  const modal = document.createElement('div');
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  modal.innerHTML = `
+    <div style="background:#111820;border:1px solid #243040;border-radius:16px;max-width:520px;width:100%;padding:24px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div style="font-size:16px;font-weight:800;">💬 Reply Targets — Do This Now (During Cooldown)</div>
+        <div onclick="this.closest('.modal').remove()" style="cursor:pointer;font-size:20px;">×</div>
+      </div>
+      <div style="font-size:13px;color:#7a8fa0;line-height:1.6;margin-bottom:16px;">
+        While the 45-min cooldown runs, do this Reply Blitz. This is MORE important than posting for your growth.
+      </div>
+      <div style="background:#0d1117;border-radius:10px;padding:14px 16px;margin-bottom:12px;">
+        <div style="font-weight:700;color:#00d4ff;margin-bottom:6px;">🔍 Search these terms on X:</div>
+        <div style="font-size:13px;line-height:1.7;color:#dde4ed;">
+          • "dropshipping failed" OR "dropshipping test 30 products"<br>
+          • "make money online UK 2026"<br>
+          • "shopify store from scratch"<br>
+          • "money doesn't work for lazy"
+        </div>
+      </div>
+      <div style="background:#0d1117;border-radius:10px;padding:14px 16px;margin-bottom:12px;">
+        <div style="font-weight:700;color:#00e890;margin-bottom:6px;">✅ Reply rules (do NOT skip):</div>
+        <div style="font-size:13px;line-height:1.7;color:#dde4ed;">
+          • Only reply to accounts with 5k+ followers<br>
+          • Add real value (don't say "great post")<br>
+          • Ask a question at the end to continue conversation<br>
+          • Aim for 10-12 quality replies
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:16px;">
+        <button onclick="this.closest('.modal').remove();showToast('Reply blitz started! Go crush it during cooldown.')" style="background:#00e890;color:#000;border:none;padding:10px 24px;border-radius:8px;font-weight:700;cursor:pointer;">Got it — Start Replying Now</button>
+      </div>
+    </div>
+  `;
+  modal.className = 'modal';
+  document.body.appendChild(modal);
+}
+
+// ══ LIVE CLOCK + STATUS ENGINE (ENHANCED WITH COOLDOWN) ══
+function getUKHour() {
+  const now = new Date();
+  const ukTime = new Date(now.toLocaleString('en-GB', {timeZone: 'Europe/London'}));
+  return {h: ukTime.getHours(), m: ukTime.getMinutes(), s: ukTime.getSeconds(), full: ukTime};
+}
+
+function padZ(n){return n<10?'0'+n:n;}
+
+function getCurrentWindowStatus(h, todayPostedCount) {
+  const base = {
+    state: 'closed',
+    label: 'OUTSIDE POSTING WINDOWS',
+    window: 'Closed',
+    winClass: 'window-closed',
+    dotClass: 'closed',
+    nextIn: null,
+    nextWin: 'Tomorrow 8 AM BST',
+    postKey: 'off'
+  };
+  
+  const inCooldown = isInCooldown();
+  
+  if (inCooldown) {
+    const remainingMin = Math.ceil(getCooldownRemainingMs() / 60000);
+    base.state = 'closed';
+    base.label = 'COOLDOWN ACTIVE — Shadowban Protection (' + remainingMin + 'm left)';
+    base.window = 'Cooldown';
+    base.winClass = 'window-closed';
+    base.dotClass = 'cooldown';
+    base.nextWin = 'After cooldown ends';
+    base.postKey = 'off';
+    return base;
+  }
+  
+  if (h >= 8 && h < 11) {
+    base.state = 'open';
+    base.label = todayPostedCount >= 3 ? 'WINDOW OPEN — but you hit daily limit' : 'POSTING WINDOW OPEN NOW ★ BEST';
+    base.window = '8–11 AM BST';
+    base.winClass = 'window-open';
+    base.dotClass = 'open';
+    base.postKey = 'morning';
+  } else if (h >= 12 && h < 14) {
+    base.state = 'open';
+    base.label = todayPostedCount >= 3 ? 'WINDOW OPEN — but you hit daily limit' : 'POSTING WINDOW OPEN NOW';
+    base.window = '12–2 PM BST';
+    base.winClass = 'window-open';
+    base.dotClass = 'open';
+    base.postKey = 'lunch';
+  } else if (h >= 16 && h < 18) {
+    base.state = 'open';
+    base.label = todayPostedCount >= 3 ? 'WINDOW OPEN — but you hit daily limit' : 'POSTING WINDOW OPEN NOW';
+    base.window = '4–6 PM BST';
+    base.winClass = 'window-open';
+    base.dotClass = 'open';
+    base.postKey = 'evening';
+  } else if (h >= 7 && h < 8) {
+    base.state = 'soon';
+    base.label = 'WINDOW OPENS IN UNDER AN HOUR';
+    base.window = '8 AM BST';
+    base.winClass = 'window-soon';
+    base.dotClass = 'soon';
+    base.nextIn = 8*60;
+    base.nextWin = '8 AM BST';
+    base.postKey = 'morning';
+  } else if (h >= 11 && h < 12) {
+    base.state = 'soon';
+    base.label = 'WINDOW OPENS IN UNDER AN HOUR';
+    base.window = '12 PM BST';
+    base.winClass = 'window-soon';
+    base.dotClass = 'soon';
+    base.nextIn = 12*60;
+    base.nextWin = '12 PM BST';
+    base.postKey = 'lunch';
+  } else if (h >= 15 && h < 16) {
+    base.state = 'soon';
+    base.label = 'WINDOW OPENS IN UNDER AN HOUR';
+    base.window = '4 PM BST';
+    base.winClass = 'window-soon';
+    base.dotClass = 'soon';
+    base.nextIn = 16*60;
+    base.nextWin = '4 PM BST';
+    base.postKey = 'evening';
+  } else if (h >= 18 || h < 7) {
+    base.state = 'closed';
+    base.label = 'OUTSIDE POSTING WINDOWS — Focus on replies';
+    base.window = 'Closed';
+    base.winClass = 'window-closed';
+    base.dotClass = 'closed';
+    base.nextIn = 8*60;
+    base.nextWin = 'Tomorrow 8 AM BST';
+    base.postKey = 'off';
+  }
+  
+  return base;
+}
+
+function getNextWindowMins(h, m) {
+  if (h < 8) return (8*60) - (h*60 + m);
+  if (h >= 11 && h < 12) return (12*60) - (h*60 + m);
+  if (h >= 14 && h < 16) return (16*60) - (h*60 + m);
+  if (h >= 18) return (24*60 - (h*60 + m)) + (8*60);
+  return 0;
+}
+
+var _pnCopyText = '';
+
+function updateAll() {
+  const t = getUKHour();
+  const h = t.h, m = t.m;
+  const todayCount = getTodayPostedCount();
+  const inCooldown = isInCooldown();
+  
+  // Clock
+  document.getElementById('liveClock').textContent = padZ(h)+':'+padZ(m)+' BST';
+  
+  // Update cooldown UI first
+  updateCooldownUI();
+  
+  // Window status
+  const ws = getCurrentWindowStatus(h, todayCount);
+  const banner = document.getElementById('statusBanner');
+  banner.className = 'status-banner ' + ws.winClass;
+  
+  const dot = document.getElementById('sbDot');
+  dot.className = 'sb-dot ' + ws.dotClass;
+  
+  const lbl = document.getElementById('sbLabel');
+  lbl.className = 'sb-label ' + ws.dotClass;
+  lbl.textContent = ws.label;
+  
+  // Countdown
+  const cdEl = document.getElementById('sbCountdown');
+  const cdTime = document.getElementById('cdTime');
+  if (ws.state === 'open' && !inCooldown) {
+    cdEl.style.display = 'none';
+  } else {
+    cdEl.style.display = '';
+    if (inCooldown) {
+      const remainingMin = Math.ceil(getCooldownRemainingMs() / 60000);
+      cdTime.textContent = remainingMin + 'm';
+      cdEl.innerHTML = 'Cooldown ends in: <span>' + remainingMin + ' min</span>';
+    } else {
+      const minsLeft = getNextWindowMins(h, m);
+      const hh = Math.floor(minsLeft/60), mm = minsLeft % 60;
+      cdTime.textContent = hh > 0 ? hh+'h '+mm+'m' : mm+' min'+(mm!==1?'s':'');
+      cdEl.innerHTML = 'Next window: <span>'+ws.nextWin+'</span> (in <span id="cdTime">'+cdTime.textContent+'</span>)';
+    }
+  }
+  
+  // Instruction
+  const instr = document.getElementById('sbInstruction');
+  if (inCooldown) {
+    const remainingMin = Math.ceil(getCooldownRemainingMs() / 60000);
+    instr.innerHTML = '<strong>⏳ Cooldown active (' + remainingMin + ' min left).</strong> Do Reply Blitz now — this grows your account more than posting. Click the purple pill above for exact targets.';
+  } else if (ws.state === 'open') {
+    if (todayCount >= 3) {
+      instr.innerHTML = '<strong>You hit your daily limit (3 posts).</strong> Focus on replies and engagement for the rest of the day. Quality > quantity.';
+    } else {
+      instr.innerHTML = '<strong>You\'re in a live posting window.</strong> Copy the post below, open X and post it now. Then come back and reply to every comment within 30 minutes. (70/30 rule: replies first!)';
+    }
+  } else if (ws.state === 'soon') {
+    instr.innerHTML = '<strong>Your next window opens very soon.</strong> Get your post ready. The first 30 minutes after posting are critical for the 2026 algorithm.';
+  } else {
+    instr.innerHTML = '<strong>Outside posting windows.</strong> This is prime time for Reply Blitz. Go reply to 10-12 posts in your niche — this grows you faster than posting right now.';
+  }
+  
+  // Window pills
+  const pillsEl = document.getElementById('sbWindows');
+  let pills = '';
+  WINDOWS.forEach(function(w) {
+    const wh = w[0]; const wend = w[1];
+    let cls, label;
+    if (h >= wh && h < wend && !inCooldown) {
+      cls = 'sb-win active-win'; label = '🟢 OPEN: ' + w[2];
+    } else if (inCooldown) {
+      cls = 'sb-win cooldown-win'; label = '⏳ COOLDOWN';
+    } else if (h < wh) {
+      cls = 'sb-win next-win'; label = '⏳ ' + w[2];
+    } else {
+      cls = 'sb-win past-win'; label = '✓ ' + w[2];
+    }
+    pills += '<div class="'+cls+'">'+label+'</div>';
+  });
+  if (inCooldown) {
+    pills += '<div class="sb-win cooldown-win">⏳ 45 MIN COOLDOWN</div>';
+  } else {
+    pills += '<div class="sb-win avoid-win">✗ After 6 PM (weaker data)</div>';
+  }
+  pillsEl.innerHTML = pills;
+  
+  // Post Now Card — smart selection
+  let postKey = ws.postKey;
+  let postIdx = ws.state === 'open' && !inCooldown ? WINDOW_POST[postKey] : WINDOW_POST['off'];
+  
+  // Avoid already posted posts
+  const postedIndexes = getPostedPosts().map(p => p.index);
+  if (postedIndexes.includes(postIdx)) {
+    const available = POSTS.filter(p => !postedIndexes.includes(p.id) && p.id !== 8);
+    if (available.length > 0) {
+      postIdx = available[Math.floor(Math.random() * available.length)].id;
+    }
+  }
+  
+  const p = POSTS.find(pp => pp.id === postIdx) || POSTS[0];
+  _pnCopyText = p.text;
+  
+  document.getElementById('pnText').textContent = p.text;
+  document.getElementById('pnType').textContent = p.type;
+  document.getElementById('pnType').className = 'c-'+p.dotClass;
+  document.getElementById('pnBadge').textContent = p.badge;
+  document.getElementById('pnBadge').className = 'heat-badge '+p.badgeClass;
+  document.getElementById('pnWhy').textContent = p.why;
+  document.getElementById('pnAngle').textContent = p.angle;
+  document.getElementById('pnWindow').textContent = inCooldown ? 'Cooldown ends soon — then post' : (ws.state === 'open' ? ws.window + ' — post RIGHT NOW' : 'Wait for ' + ws.nextWin);
+  document.getElementById('pnReply').textContent = p.reply;
+  
+  // Label
+  const nowLabel = document.getElementById('postNowLabel');
+  if (inCooldown) {
+    const remainingMin = Math.ceil(getCooldownRemainingMs() / 60000);
+    nowLabel.innerHTML = '&#128337; Cooldown active — ' + remainingMin + ' min until next post (shadowban protection)';
+    nowLabel.style.color = 'var(--cooldown)';
+  } else if (ws.state === 'open') {
+    nowLabel.innerHTML = todayCount >= 3 ? 
+      '&#128337; Daily limit reached — focus on replies' : 
+      '&#9889; Post this RIGHT NOW — window is live (tailored for @zzakBtc)';
+    nowLabel.style.color = todayCount >= 3 ? 'var(--muted2)' : 'var(--good)';
+  } else if (ws.state === 'soon') {
+    nowLabel.innerHTML = '&#9200; Get this ready — window opens soon';
+    nowLabel.style.color = 'var(--warm)';
+  } else {
+    nowLabel.innerHTML = '&#128337; Save this for next window: ' + ws.nextWin + ' • Do Reply Blitz now';
+    nowLabel.style.color = 'var(--muted2)';
+  }
+  
+  // Highlight today
+  const dow = t.full.getDay();
+  const ids = ['ttSun','ttMon','ttTue','ttWed','ttThu','ttFri','ttSat'];
+  ids.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (i === dow) {
+      el.classList.add('today-row');
+      const badge = el.querySelector('.day-badge');
+      if (badge && !badge.classList.contains('db-today')) {
+        badge.classList.add('db-today');
+        badge.textContent = todayCount > 0 ? '← TODAY (' + todayCount + ' posted)' : '← TODAY';
+      }
+    }
+  });
+  
+  updateStats();
+}
+
+// ══ INIT ══
+function init() {
+  updateStats();
+  
+  // Mark the already-posted card
+  const alreadyCard = document.getElementById('card-8');
+  if (alreadyCard) {
+    alreadyCard.classList.add('posted');
+  }
+  
+  // Run clock + status
+  updateAll();
+  setInterval(updateAll, 5000); // every 5s for smooth cooldown timer
+  
+  // Keyboard shortcuts
+  document.addEventListener('keydown', function(e) {
+    if (e.key.toLowerCase() === 'r') showReplyTargets();
+    if (e.key.toLowerCase() === 'n') {
+      const pn = document.getElementById('postNowSection');
+      if (pn) pn.scrollIntoView({behavior:'smooth'});
+    }
+  });
+  
+  // Welcome
+  setTimeout(() => {
+    if (!localStorage.getItem('zzakbtc_welcomed')) {
+      showToast('Welcome back, zak. 45-min shadowban protection is now active.');
+      localStorage.setItem('zzakbtc_welcomed', 'true');
+    }
+  }, 1800);
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.style.display = 'block';
+  toast.style.opacity = '1';
+  
+  setTimeout(() => {
+    toast.style.transition = 'opacity 0.4s';
+    toast.style.opacity = '0';
+    setTimeout(() => {
+      toast.style.display = 'none';
+      toast.style.transition = '';
+    }, 400);
+  }, 2800);
+}
+
+function switchPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function showSet(id) {
+  document.querySelectorAll('.post-set').forEach(e => e.classList.remove('active'));
+  document.querySelectorAll('.trend-chip').forEach(e => e.classList.remove('active'));
+  document.getElementById('set-' + id).classList.add('active');
+  document.querySelector('[data-set="' + id + '"]').classList.add('active');
+}
+
+// Boot everything
+init();
+</script>
+</body>
+</html>
